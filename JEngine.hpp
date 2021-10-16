@@ -2,11 +2,19 @@
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_mixer.h>
+#include <string>
 
 #ifndef JENGINE_HPP
 #define JENGINE_HPP
 
 using namespace std;
+
+struct sized_texture
+{
+  SDL_Texture* texture;
+  int width;
+  int height;
+};
 
 class JEngine {
     private:
@@ -29,13 +37,16 @@ class JEngine {
         SDL_Joystick *sdl_gamepads[2];
     public:
         JEngine(void);
-        ~JEngine(void);
+        virtual ~JEngine(void);
         void init(void);
         void close(void);
         void run(void);
         void render(void);
+        void load_texture(struct sized_texture *texture, string path);
         virtual void render_game(void);
-        virtual void update_game(void);        
+        virtual void update_game(void);
+        virtual void load_media(void);
+        virtual void close_media(void);
 };
 
 #endif

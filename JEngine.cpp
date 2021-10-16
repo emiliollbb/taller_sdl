@@ -9,9 +9,12 @@ using namespace std;
 
 JEngine::JEngine() {
     init();
+    cout << "Load media..." <<endl;
+    load_media();
 }
 
 JEngine::~JEngine() {
+    close_media();
     close();
 }
 
@@ -107,7 +110,8 @@ void JEngine::init() {
 void JEngine::close() {
     cout << "Close" << endl;
     
-    
+   // Close media
+   close_media(); 
   
   //Destroy renderer  
   if(sdl_renderer!=NULL)
@@ -217,10 +221,35 @@ void JEngine::render() {
   SDL_RenderPresent(sdl_renderer);
 }
 
-void JEngine::update_game() {
+void JEngine::load_texture(struct sized_texture *texture, string path)
+{
+  // Aux surface
+  SDL_Surface* loadedSurface;
+  
+  //Load image at specified path
+  loadedSurface = IMG_Load(path.c_str());
+  if(loadedSurface == NULL )
+  {
+    printf( "Unable to load image %s! SDL_image Error: %s\n", path.c_str(), IMG_GetError() );
+    exit(-1);
+  }
+  //Get image dimensions 
+  texture->width = loadedSurface->w; 
+  texture->height = loadedSurface->h;
+  //Create texture from surface pixels
+  texture->texture = SDL_CreateTextureFromSurface(sdl_renderer, loadedSurface);
+  if( texture->texture == NULL )
+  {
+    printf( "Unable to create texture from %s! SDL Error: %s\n", path.c_str(), SDL_GetError() );
+  }
+  
+  //Get rid of old loaded surface
+  SDL_FreeSurface(loadedSurface);
+  
 }
 
-void JEngine::render_game() {
-}
-
+void JEngine::update_game(){}
+void JEngine::render_game(){}
+void JEngine::load_media(){cout << "base"<<endl;}
+void JEngine::close_media(){}
 
