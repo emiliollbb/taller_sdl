@@ -8,12 +8,15 @@ all: juego
 
 JEngine.o: JEngine.cpp
 	gcc $(COMPILER_FLAGS) JEngine.cpp -o JEngine.o
+	
+Juego.o: Juego.cpp
+	gcc $(COMPILER_FLAGS) Juego.cpp -o Juego.o
 
 main.o: main.cpp
 	gcc $(COMPILER_FLAGS) main.cpp -o main.o
 
-juego: main.o JEngine.o
-	gcc $(LINKER_FLAGS) main.o JEngine.o -o juego
+juego: main.o JEngine.o Juego.o
+	gcc $(LINKER_FLAGS) main.o JEngine.o Juego.o -o juego
 
 clean:
 	rm -f *.o juego debug	

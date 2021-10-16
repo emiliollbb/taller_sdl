@@ -3,6 +3,9 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_mixer.h>
 
+#ifndef JENGINE_HPP
+#define JENGINE_HPP
+
 using namespace std;
 
 class JEngine {
@@ -25,9 +28,14 @@ class JEngine {
         //Game Controllers 
         SDL_Joystick *sdl_gamepads[2];
     public:
+        JEngine(void);
+        ~JEngine(void);
         void init(void);
         void close(void);
         void run(void);
         void render(void);
-        void update_game(void);
+        virtual void render_game(void);
+        virtual void update_game(void);        
 };
+
+#endif

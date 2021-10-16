@@ -7,6 +7,14 @@
 
 using namespace std;
 
+JEngine::JEngine() {
+    init();
+}
+
+JEngine::~JEngine() {
+    close();
+}
+
 void JEngine::init() {
     cout << "Init" << endl;
     
@@ -191,7 +199,8 @@ void JEngine::run()
     {
       process_input(&e);
     }
-    // Render
+    
+    // Update & Render
     sync_render();
   }
 }
@@ -201,6 +210,8 @@ void JEngine::render() {
   SDL_SetRenderDrawColor( sdl_renderer, 0x00, 0x00, 0x00, 0xFF );
   SDL_RenderClear( sdl_renderer );
   
+  // Actual rendering
+  render_game();
   
   //Update screen
   SDL_RenderPresent(sdl_renderer);
@@ -208,3 +219,8 @@ void JEngine::render() {
 
 void JEngine::update_game() {
 }
+
+void JEngine::render_game() {
+}
+
+
