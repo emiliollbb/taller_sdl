@@ -8,14 +8,11 @@
 using namespace std;
 
 JEngine::JEngine() {
-    init();
-    cout << "Load media..." <<endl;
-    load_media();
+	cout << "Init JEngine" << endl;
 }
 
-JEngine::~JEngine() {
-    close_media();
-    close();
+JEngine::~JEngine() {  
+	cout << "Destroy JEngine" << endl; 
 }
 
 void JEngine::init() {
@@ -194,6 +191,13 @@ void JEngine::run()
   
   // Init quit flag
   quit=0;
+  
+  // Init SDL
+  init();
+  
+  // Load Media
+  cout << "Load media..." <<endl;
+  load_media();
       
   // Main game loop
   while(!quit)
@@ -207,6 +211,11 @@ void JEngine::run()
     // Update & Render
     sync_render();
   }
+  
+  // Close media
+  close_media();
+  // Close SDL
+  close();
 }
 
 void JEngine::render() {

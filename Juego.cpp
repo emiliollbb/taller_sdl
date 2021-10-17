@@ -19,7 +19,7 @@ void Juego::update_game() {
 }
 
 void Juego::load_media() {
-    cout << "Load media" <<endl;
+    cout << "Load media juego" <<endl;
     //Load background 
     load_texture(&texture_background, string("background.png")); 
 }
