@@ -12,4 +12,6 @@ int main(int argc, char* argv[])
     juego->run();
         
     delete juego;
+    
+    return 0;
 }
