@@ -8,11 +8,11 @@
 using namespace std;
 
 JEngine::JEngine() {
-	cout << "Init JEngine" << endl;
+    cout << "Init JEngine" << endl;
 }
 
 JEngine::~JEngine() {  
-	cout << "Destroy JEngine" << endl; 
+    cout << "Destroy JEngine" << endl; 
 }
 
 void JEngine::init() {
@@ -21,39 +21,37 @@ void JEngine::init() {
     quit=false;
     
     //Initialize SDL
-  if( SDL_Init( SDL_INIT_VIDEO | SDL_INIT_JOYSTICK ) < 0 )
-  {
-    printf( "SDL could not initialize! SDL Error: %s\n", SDL_GetError() );
-    exit(-1);
-  }
-  
-  //Set texture filtering to linear
-  if( !SDL_SetHint( SDL_HINT_RENDER_SCALE_QUALITY, "1" ) )
-  {
-    printf( "Warning: Linear texture filtering not enabled!" );
-    exit(-1);
-  }
-  
-  //Check for joysticks 
-  if( SDL_NumJoysticks() < 1 ) 
-  { 
-    printf( "Warning: No joysticks connected!\n" ); 
-  } 
-  else 
-  {
-    printf("%d joysticks connected\n", SDL_NumJoysticks());
-    for(int i=0; i<SDL_NumJoysticks(); i++)
+    if( SDL_Init( SDL_INIT_VIDEO | SDL_INIT_JOYSTICK ) < 0 )
     {
-      //Load joystick 
-      sdl_gamepads[i] = SDL_JoystickOpen(i); 
-      if(sdl_gamepads[i] == NULL ) 
-      { 
-	printf( "Warning: Unable to open game controller %d! SDL Error: %s\n", i, SDL_GetError() ); 
-	
+      printf( "SDL could not initialize! SDL Error: %s\n", SDL_GetError() );
+      exit(-1);
+    }
+  
+    //Set texture filtering to linear
+    if( !SDL_SetHint( SDL_HINT_RENDER_SCALE_QUALITY, "1" ) )
+    {
+      printf( "Warning: Linear texture filtering not enabled!" );
+      exit(-1);
+    }
+  
+    //Check for joysticks 
+    if( SDL_NumJoysticks() < 1 ) 
+    { 
+      printf( "Warning: No joysticks connected!\n" ); 
+    } 
+    else 
+    {
+      printf("%d joysticks connected\n", SDL_NumJoysticks());
+      for(int i=0; i<SDL_NumJoysticks(); i++)
+      {
+        //Load joystick 
+        sdl_gamepads[i] = SDL_JoystickOpen(i); 
+        if(sdl_gamepads[i] == NULL ) 
+        { 
+	          printf( "Warning: Unable to open game controller %d! SDL Error: %s\n", i, SDL_GetError() ); 
+        }
       }
     }
-    
-  }
   
   
     // Get display mode
