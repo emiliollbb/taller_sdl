@@ -41,5 +41,5 @@ main.win.o: main.cpp
 	x86_64-w64-mingw32-gcc $(INCL_WIN) $(LIB_WIN) $(COMPILER_FLAGS) main.cpp -o main.win.o	
 
 juego.exe: main.win.o JEngine.win.o Juego.win.o
-	x86_64-w64-mingw32-g++ -static $(INCL_WIN) $(LIB_WIN) -g `$(SDL_WIN)/bin/sdl2-config --static-libs` -lSDL2_image -lSDL2_ttf -lSDL2_mixer main.win.o JEngine.win.o Juego.win.o -o juego.exe
+	x86_64-w64-mingw32-g++ -static main.win.o JEngine.win.o Juego.win.o `$(SDL_WIN)/bin/sdl2-config --static-libs` -lSDL2_image -lSDL2_ttf -lSDL2_ttf.dll -lSDL2_mixer -o juego.exe
 
