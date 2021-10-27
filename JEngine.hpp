@@ -11,9 +11,9 @@ using namespace std;
 
 struct sized_texture
 {
-  SDL_Texture* texture;
-  int width;
-  int height;
+    SDL_Texture* texture;
+    int width;
+    int height;
 };
 
 class JEngine {
