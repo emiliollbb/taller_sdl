@@ -1,8 +1,8 @@
 #include <iostream>
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_ttf.h>
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL_mixer.h>
+//#include <SDL2/SDL_ttf.h>
+//#include <SDL2/SDL_image.h>
+//#include <SDL2/SDL_mixer.h>
 #include "JEngine.hpp"
 
 using namespace std;
@@ -16,80 +16,60 @@ JEngine::~JEngine() {
 }
 
 void JEngine::init() {
-    cout << "Init" << endl;
-    
     quit=false;
     
     //Initialize SDL
     if( SDL_Init( SDL_INIT_VIDEO | SDL_INIT_JOYSTICK ) < 0 )
     {
-      printf( "SDL could not initialize! SDL Error: %s\n", SDL_GetError() );
-      exit(-1);
+      throw JEngineException("SDL could not be initialized! SDL Error: " + SDL_GetError() );
     }
   
     //Set texture filtering to linear
-    if( !SDL_SetHint( SDL_HINT_RENDER_SCALE_QUALITY, "1" ) )
-    {
-      printf( "Warning: Linear texture filtering not enabled!" );
-      exit(-1);
-    }
+    SDL_SetHint( SDL_HINT_RENDER_SCALE_QUALITY, "1" )
   
     //Check for joysticks 
-    if( SDL_NumJoysticks() < 1 ) 
-    { 
-      printf( "Warning: No joysticks connected!\n" ); 
-    } 
-    else 
+    for(int i=0; i<SDL_NumJoysticks(); i++)
     {
-      printf("%d joysticks connected\n", SDL_NumJoysticks());
-      for(int i=0; i<SDL_NumJoysticks(); i++)
-      {
-        //Load joystick 
-        sdl_gamepads[i] = SDL_JoystickOpen(i); 
-        if(sdl_gamepads[i] == NULL ) 
-        { 
-	          printf( "Warning: Unable to open game controller %d! SDL Error: %s\n", i, SDL_GetError() ); 
-        }
+      //Load joystick 
+      sdl_gamepads[i] = SDL_JoystickOpen(i); 
+      if(sdl_gamepads[i] == NULL ) 
+      { 
+	     throw JEngineException("Unable to open game controller #" + i + "! SDL Error: " + SDL_GetError() );
       }
     }
-  
-  
+      
     // Get display mode
     if (SDL_GetDesktopDisplayMode(0, &sdl_display_mode) != 0) {
-      printf("SDL_GetDesktopDisplayMode failed: %s", SDL_GetError());
-      exit(-1);
+      throw JEngineException("SDL_GetDesktopDisplayMode faile! SDL Error: " + SDL_GetError() );
     }
     SCREEN_WIDTH=sdl_display_mode.w;
     SCREEN_HEIGHT=sdl_display_mode.h;
     
     //Create window
-    sdl_window = SDL_CreateWindow("Duck_hunter", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_FULLSCREEN);
+    sdl_window = SDL_CreateWindow("Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_FULLSCREEN);
     if( sdl_window == NULL )
     {
-      printf( "Window could not be created! SDL Error: %s\n", SDL_GetError() );
-      exit(-1);
+	  throw JEngineException("Window could not be created! SDL Error: " + SDL_GetError() );
     }
-  
   
     //Create renderer for window
     sdl_renderer = SDL_CreateRenderer( sdl_window, -1, SDL_RENDERER_ACCELERATED );
     if( sdl_renderer == NULL )
     {
-      printf( "Renderer could not be created! SDL Error: %s\n", SDL_GetError() );
-      exit(-1);
+	  throw JEngineException("Renderer could not be created! SDL Error: " + SDL_GetError() );
     }
-  
+    
+    //Initialize PNG loading
+    if( !( IMG_Init( IMG_INIT_PNG ) & IMG_INIT_PNG ) )
+    {
+	  throw JEngineException("SDL_image could not initialize! SDL Error: " + SDL_GetError() );
+    }
+    
+    /*
     //Initialize SDL_ttf 
     if(TTF_Init()<0) 
     {
       printf( "SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError() ); 
-      exit(-1);
-    }
-  
-    //Initialize PNG loading
-    if( !( IMG_Init( IMG_INIT_PNG ) & IMG_INIT_PNG ) )
-    {
-      printf( "SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError() );
       exit(-1);
     }
   
@@ -99,11 +79,10 @@ void JEngine::init() {
       printf( "SDL_mixer could not initialize!\n");
       exit(-1);
     }
+    * */
 }
 
 void JEngine::close() {
-    cout << "Close" << endl;
-    
     // Close media
     close_media(); 
   
@@ -129,8 +108,10 @@ void JEngine::close() {
     }
   
     // Exit SDL
+    /*
     Mix_CloseAudio();
     TTF_Quit();
+    */
     IMG_Quit();
     SDL_Quit();
 }
