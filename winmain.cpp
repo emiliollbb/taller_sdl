@@ -11,9 +11,9 @@ int main(int argc, char* argv[])
 		Juego *juego = new Juego();
 		juego->run();
 		delete juego;
-	} catch (JEngineException e) {
+	} catch (JEngineException &e) {
 		MessageBox(
-			NULL, e.what(), "Error!", MB_ICONWARNING | MB_OK
+			NULL, e.what()->c_str(), "Error!", MB_ICONWARNING | MB_OK
 		);
 	}
     

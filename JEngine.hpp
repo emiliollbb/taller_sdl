@@ -16,11 +16,13 @@ struct sized_texture
     int height;
 };
 
-class JEngineException: public runtime_error {
+class JEngineException {
 	private:
 	protected:
+		string message;
 	public:
-		JEngineException(string what):runtime_error(what){};
+		JEngineException(string &what);
+		string* what();
 };
 
 class JEngine {

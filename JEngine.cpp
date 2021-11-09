@@ -7,6 +7,15 @@
 
 using namespace std;
 
+
+JEngineException::JEngineException(string& what) {
+	this->message = what;
+}
+
+string* JEngineException::what(void) {
+	return &message;
+}
+
 JEngine::JEngine() {
     cout << "Init JEngine" << endl;
 }
@@ -21,7 +30,8 @@ void JEngine::init() {
     //Initialize SDL
     if( SDL_Init( SDL_INIT_VIDEO | SDL_INIT_JOYSTICK ) < 0 )
     {
-      throw JEngineException("SDL could not be initialized! SDL Error: " + string(SDL_GetError()));
+	  string error = "SDL could not be initialized! SDL Error: " + string(SDL_GetError());
+      throw JEngineException(error);
     }
   
     //Set texture filtering to linear
@@ -33,14 +43,16 @@ void JEngine::init() {
       //Load joystick 
       sdl_gamepads[i] = SDL_JoystickOpen(i); 
       if(sdl_gamepads[i] == NULL ) 
-      { 
-	     throw JEngineException("Unable to open game controller #" + to_string(i) + "! SDL Error: " + string(SDL_GetError()) );
+      {
+		 string error =  "Unable to open game controller #" + to_string(i) + "! SDL Error: " + string(SDL_GetError());
+	     throw JEngineException(error);
       }
     }
       
     // Get display mode
     if (SDL_GetDesktopDisplayMode(0, &sdl_display_mode) != 0) {
-      throw JEngineException("SDL_GetDesktopDisplayMode faile! SDL Error: " + string(SDL_GetError()) );
+      string error = "SDL_GetDesktopDisplayMode faile! SDL Error: " + string(SDL_GetError());
+      throw JEngineException(error);
     }
     SCREEN_WIDTH=sdl_display_mode.w;
     SCREEN_HEIGHT=sdl_display_mode.h;
@@ -49,20 +61,23 @@ void JEngine::init() {
     sdl_window = SDL_CreateWindow("Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_FULLSCREEN);
     if( sdl_window == NULL )
     {
-	  throw JEngineException("Window could not be created! SDL Error: " + string(SDL_GetError()) );
+	  string error = "Window could not be created! SDL Error: " + string(SDL_GetError());
+	  throw JEngineException(error);
     }
   
     //Create renderer for window
     sdl_renderer = SDL_CreateRenderer( sdl_window, -1, SDL_RENDERER_ACCELERATED );
     if( sdl_renderer == NULL )
     {
-	  throw JEngineException("Renderer could not be created! SDL Error: " + string(SDL_GetError()) );
+	  string error = "Renderer could not be created! SDL Error: " + string(SDL_GetError());
+	  throw JEngineException(error);
     }
     
     //Initialize PNG loading
     if( !( IMG_Init( IMG_INIT_PNG ) & IMG_INIT_PNG ) )
     {
-	  throw JEngineException("SDL_image could not initialize! SDL Error: " + string(SDL_GetError()) );
+	  string error = "SDL_image could not initialize! SDL Error: " + string(SDL_GetError());
+	  throw JEngineException(error);
     }
     
     /*
