@@ -16,6 +16,13 @@ struct sized_texture
     int height;
 };
 
+class JEngineException: public runtime_error {
+	private:
+	protected:
+	public:
+		JEngineException(string what):runtime_error(what){};
+};
+
 class JEngine {
     private:
         void sync_render(void);
