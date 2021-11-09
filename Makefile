@@ -10,7 +10,7 @@ SDL_WIN=/home/emilio/sdl_win/SDL2-2.0.16/x86_64-w64-mingw32
 SDL_IMAGE=/home/emilio/sdl_win/SDL2_image-2.0.5/x86_64-w64-mingw32
 
 # Include Windows
-INCL_WIN=-I/home/emilio/sdl_win/SDL2-2.0.16/x86_64-w64-mingw32/include
+INCL_WIN=-I$(SDL_WIN)/include
 
 # lIB Windows
 LIB_WIN=-L$(SDL_WIN)/lib -L$(SDL_IMAGE)/lib
@@ -30,7 +30,7 @@ juego: main.o JEngine.o Juego.o
 	gcc $(LINKER_FLAGS) main.o JEngine.o Juego.o -o juego
 
 clean:
-	rm -f *.o juego debug	
+	rm -f *.o *.exe *.zip juego debug
 
 JEngine.win.o: JEngine.cpp JEngine.hpp
 	x86_64-w64-mingw32-gcc $(INCL_WIN) $(LIB_WIN) $(COMPILER_FLAGS) JEngine.cpp -o JEngine.win.o
@@ -44,3 +44,5 @@ main.win.o: main.cpp
 juego.exe: main.win.o JEngine.win.o Juego.win.o
 	x86_64-w64-mingw32-g++ $(LIB_WIN) -static main.win.o JEngine.win.o Juego.win.o `$(SDL_WIN)/bin/sdl2-config --static-libs` -lSDL2_image -o juego.exe
 
+juego.zip: juego.exe
+	zip -j juego.zip juego.exe $(SDL_IMAGE)/bin/libpng16-16.dll $(SDL_IMAGE)/bin/zlib1.dll background.png
