@@ -30,7 +30,7 @@ juego: main.o JEngine.o Juego.o
 	gcc $(LINKER_FLAGS) main.o JEngine.o Juego.o -o juego
 
 clean:
-	rm -f *.o *.exe *.zip juego debug
+	rm -f *.o *.exe *.zip *.dat juego debug
 
 JEngine.win.o: JEngine.cpp JEngine.hpp
 	x86_64-w64-mingw32-gcc $(INCL_WIN) $(LIB_WIN) $(COMPILER_FLAGS) JEngine.cpp -o JEngine.win.o
@@ -44,5 +44,8 @@ main.win.o: main.cpp
 juego.exe: main.win.o JEngine.win.o Juego.win.o
 	x86_64-w64-mingw32-g++ $(LIB_WIN) -static main.win.o JEngine.win.o Juego.win.o `$(SDL_WIN)/bin/sdl2-config --static-libs` -lSDL2_image -o juego.exe
 
-juego.zip: juego.exe
-	zip -j juego.zip juego.exe $(SDL_IMAGE)/bin/libpng16-16.dll $(SDL_IMAGE)/bin/zlib1.dll background.png
+juego.dat: background.png
+	zip -j juego.dat background.png
+
+juego.zip: juego.exe juego.dat
+	zip -j juego.zip juego.exe juego.dat $(SDL_IMAGE)/bin/libpng16-16.dll $(SDL_IMAGE)/bin/zlib1.dll background.png
