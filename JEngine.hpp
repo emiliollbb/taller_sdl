@@ -3,6 +3,7 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_mixer.h>
 #include <string>
+#include "Resource.hpp"
 
 #ifndef JENGINE_HPP
 #define JENGINE_HPP
@@ -52,6 +53,7 @@ class JEngine {
         void run(void);
         void render(void);
         void load_texture(struct sized_texture *texture, string path);
+        void load_texture(struct sized_texture *texture, Resource *res);
         virtual void render_game(void);
         virtual void update_game(void);
         virtual void load_media(void);

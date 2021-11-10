@@ -4,6 +4,7 @@
 //#include <SDL2/SDL_image.h>
 //#include <SDL2/SDL_mixer.h>
 #include "JEngine.hpp"
+#include "Resource.hpp"
 
 using namespace std;
 
@@ -222,8 +223,7 @@ void JEngine::render() {
     SDL_RenderPresent(sdl_renderer);
 }
 
-void JEngine::load_texture(struct sized_texture *texture, string path)
-{
+void JEngine::load_texture(struct sized_texture *texture, string path) {
     // Aux surface
     SDL_Surface* loadedSurface;
   
@@ -246,7 +246,34 @@ void JEngine::load_texture(struct sized_texture *texture, string path)
   
     //Get rid of old loaded surface
     SDL_FreeSurface(loadedSurface);
+}
+
+void JEngine::load_texture(struct sized_texture *texture, Resource *res) {
+    // Aux surface
+    SDL_Surface* loadedSurface;
+    SDL_RWops *rw;
   
+    //Load image at specified path
+    rw = SDL_RWFromMem(res->getData(), res->getSize());
+    loadedSurface = IMG_Load_RW(rw, 1);
+    if(loadedSurface == NULL )
+    {
+      printf( "Unable to load image %s! SDL_image Error: %s\n", res->getFileName().c_str(), IMG_GetError() );
+      exit(-1);
+    }
+    //Get image dimensions 
+    texture->width = loadedSurface->w; 
+    texture->height = loadedSurface->h;
+    //Create texture from surface pixels
+    texture->texture = SDL_CreateTextureFromSurface(sdl_renderer, loadedSurface);
+    if( texture->texture == NULL )
+    {
+      printf( "Unable to create texture from %s! SDL Error: %s\n", res->getFileName().c_str(), SDL_GetError() );
+    }
+  
+    //Get rid of old loaded surface
+    SDL_FreeSurface(loadedSurface);
+    free(rw);
 }
 
 void JEngine::update_game(){}

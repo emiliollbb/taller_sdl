@@ -23,17 +23,23 @@ JEngine.o: JEngine.cpp JEngine.hpp
 Juego.o: Juego.cpp Juego.hpp
 	gcc $(COMPILER_FLAGS) Juego.cpp -o Juego.o
 
+Resource.o: Resource.cpp Resource.hpp
+	gcc $(COMPILER_FLAGS) Resource.cpp -o Resource.o
+
 main.o: main.cpp
 	gcc $(COMPILER_FLAGS) main.cpp -o main.o
 
-juego: main.o JEngine.o Juego.o
-	gcc $(LINKER_FLAGS) main.o JEngine.o Juego.o -o juego
+juego: main.o JEngine.o Juego.o Resource.o
+	gcc $(LINKER_FLAGS) main.o JEngine.o Resource.o Juego.o -o juego
 
 clean:
 	rm -f *.o *.exe *.zip *.dat juego debug
 
 JEngine.win.o: JEngine.cpp JEngine.hpp
 	x86_64-w64-mingw32-gcc $(INCL_WIN) $(LIB_WIN) $(COMPILER_FLAGS) JEngine.cpp -o JEngine.win.o
+	
+Resource.win.o: Resource.cpp Resource.hpp
+	x86_64-w64-mingw32-gcc $(INCL_WIN) $(LIB_WIN) $(COMPILER_FLAGS) Resource.cpp -o Resource.win.o
 	
 Juego.win.o: Juego.cpp Juego.hpp
 	x86_64-w64-mingw32-gcc $(INCL_WIN) $(LIB_WIN) $(COMPILER_FLAGS) Juego.cpp -o Juego.win.o
@@ -42,7 +48,7 @@ main.win.o: main.cpp
 	x86_64-w64-mingw32-g++ $(INCL_WIN) $(COMPILER_FLAGS) winmain.cpp -o main.win.o
 
 juego.exe: main.win.o JEngine.win.o Juego.win.o
-	x86_64-w64-mingw32-g++ $(LIB_WIN) -static main.win.o JEngine.win.o Juego.win.o `$(SDL_WIN)/bin/sdl2-config --static-libs` -lSDL2_image -o juego.exe
+	x86_64-w64-mingw32-g++ $(LIB_WIN) -static main.win.o JEngine.win.o Resource.win.o Juego.win.o `$(SDL_WIN)/bin/sdl2-config --static-libs` -lSDL2_image -o juego.exe
 
 juego.dat: background.png
 	zip -j juego.dat background.png
