@@ -1,4 +1,5 @@
 #https://stackoverflow.com/questions/17620884/static-linking-of-sdl2-libraries
+# apt-get install build-essential libzip-dev
 
 #COMPILER_FLAGS specifies the additional compilation options we're using 
 COMPILER_FLAGS = -c -Wall -O2
