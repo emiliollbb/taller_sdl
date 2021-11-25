@@ -32,6 +32,9 @@ main.o: main.cpp
 
 juego: main.o JEngine.o Juego.o Resource.o
 	gcc $(LINKER_FLAGS) main.o JEngine.o Resource.o Juego.o -o juego
+	
+debug: JEngine.cpp JEngine.hpp Juego.cpp Juego.hpp Resource.cpp Resource.hpp main.cpp
+	gcc -g $(LINKER_FLAGS) JEngine.cpp JEngine.hpp Juego.cpp Juego.hpp Resource.cpp Resource.hpp main.cpp -o debug
 
 clean:
 	rm -f *.o *.exe *.zip *.dat juego debug

@@ -67,8 +67,8 @@ void JEngine::init() {
     }
   
     //Create renderer for window
-    sdl_renderer = SDL_CreateRenderer( sdl_window, -1, SDL_RENDERER_ACCELERATED );
-    if( sdl_renderer == NULL )
+    this->sdl_renderer = SDL_CreateRenderer( sdl_window, -1, SDL_RENDERER_ACCELERATED );
+    if( this->sdl_renderer == NULL )
     {
 	  string error = "Renderer could not be created! SDL Error: " + string(SDL_GetError());
 	  throw JEngineException(error);
@@ -99,28 +99,26 @@ void JEngine::init() {
 }
 
 void JEngine::close() {
-    // Close media
-    close_media(); 
-  
+    
     //Destroy renderer  
     if(sdl_renderer!=NULL)
     {
-      SDL_DestroyRenderer( sdl_renderer );
-      sdl_renderer=NULL;
+      SDL_DestroyRenderer( this->sdl_renderer );
+      this->sdl_renderer=NULL;
     }
   
     if(sdl_window != NULL)
     {
       // Destroy window
-      SDL_DestroyWindow( sdl_window );
-      sdl_window=NULL;
+      SDL_DestroyWindow( this->sdl_window );
+      this->sdl_window=NULL;
     }
   
     // Close gamepads
     for(int i=0; i<SDL_NumJoysticks(); i++)
     {
-      SDL_JoystickClose(sdl_gamepads[i]);
-      sdl_gamepads[i]=NULL;
+      SDL_JoystickClose(this->sdl_gamepads[i]);
+      this->sdl_gamepads[i]=NULL;
     }
   
     // Exit SDL
