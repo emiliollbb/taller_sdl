@@ -2,8 +2,18 @@
 #include <stdio.h>
 #include <string>
 #include <iostream>
+#include <zip.h>
 
 using namespace std;
+
+ResourceException::ResourceException(string& what) {
+	cout << what << endl;
+    this->message = what;
+}
+
+string* ResourceException::what(void) {
+	return &message;
+}
 
 Resource::Resource(string &file_name) {
     this->file_name=file_name;
@@ -22,7 +32,8 @@ string Resource::getFileName(void) {
     return this->file_name;
 }
 
-void Resource::load(void) {
+
+void Resource::load_plain(void) {
     cout << "load file" << endl;
     FILE *fp;
     
@@ -49,6 +60,51 @@ void Resource::load(void) {
     cout << "loaded" << endl;
     
 }
+
+
+void Resource::load(void) {
+    // https://gist.github.com/mobius/1759816
+    struct zip *za;
+    int zlib_error;
+    
+    za = zip_open("juego.dat", 0, &zlib_error);
+    if(za == NULL) {
+        string error = "Error opening zip file";
+        throw ResourceException(error);
+    }
+    
+    int zip_entries_count=zip_get_num_entries(za, 0);
+    for (int i = 0; i <zip_entries_count; i++) {
+        struct zip_stat sb;
+        int status = zip_stat_index(za, i, 0, &sb);
+        if(status!=0) {
+            string error="Error stat entry";
+            throw ResourceException(error);
+        }
+        string zip_entry_name = string(sb.name);
+        if(zip_entry_name==this->file_name) {
+            cout << "found" <<endl;
+            this->size = sb.size;
+            
+            struct zip_file *zf = zip_fopen_index(za, i, 0);
+            if (!zf) {
+                string error="Error fopen entry";
+                throw ResourceException(error);
+            }
+            
+            
+            
+            zip_fclose(zf);
+        }
+    }
+        
+    
+    if (zip_close(za) == -1) {
+        string error = "Error closing zip file";
+        throw ResourceException(error);
+    }
+}
+
 
 char* Resource::getData(void) {
     return this->data;
