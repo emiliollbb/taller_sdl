@@ -14,7 +14,7 @@ int main(int argc, char* argv[])
             
         delete juego;
     } catch (JEngineException &e) {
-		cout << "Error! " << e.what() << endl;
+		cout << "Error! " << *e.what() << endl;
         flush(cout);        
 	}
     

@@ -15,7 +15,7 @@ int main(int argc, char* argv[])
             
         delete resource;
     } catch (ResourceException &e) {
-		cout << "ResourceException! " << e.what() << endl;
+		cout << "ResourceException! " << *e.what() << endl;
         flush(cout);        
 	}
     

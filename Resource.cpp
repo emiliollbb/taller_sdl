@@ -83,18 +83,25 @@ void Resource::load(void) {
         }
         string zip_entry_name = string(sb.name);
         if(zip_entry_name==this->file_name) {
-            cout << "found" <<endl;
             this->size = sb.size;
-            
+                        
             struct zip_file *zf = zip_fopen_index(za, i, 0);
             if (!zf) {
                 string error="Error fopen entry";
                 throw ResourceException(error);
             }
             
-            
-            
-            zip_fclose(zf);
+            this->data = (char*) calloc( 1, this->size+1 );
+            int len = zip_fread(zf, this->data, this->size);
+            if (len < 0) {
+                string error="Error reading entry";
+                throw ResourceException(error);
+            }
+                        
+            if (zip_fclose(zf) == -1) {
+                string error = "Error closing zip entry";
+                throw ResourceException(error);
+            }
         }
     }
         
