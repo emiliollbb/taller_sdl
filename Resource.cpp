@@ -91,7 +91,7 @@ void Resource::load(void) {
                 throw ResourceException(error);
             }
             
-            this->data = (char*) calloc( 1, this->size+1 );
+            this->data = (char*) malloc(this->size*sizeof(char));
             int len = zip_fread(zf, this->data, this->size);
             if (len < 0) {
                 string error="Error reading entry";
