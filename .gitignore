@@ -1,4 +1,7 @@
 juego
+debug
+ResourceTest
+*.dat
 # Prerequisites
 *.d
 
