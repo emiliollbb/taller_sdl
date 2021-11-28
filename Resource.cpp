@@ -23,7 +23,7 @@ Resource::Resource(string &file_name) {
 
 Resource::~Resource() {
     if(this->data!=NULL) {
-        delete data;
+        delete[] this->data;
         this->data=NULL;
     }
 }
@@ -91,7 +91,7 @@ void Resource::load(void) {
                 throw ResourceException(error);
             }
             
-            this->data = (char*) malloc(this->size*sizeof(char));
+            this->data = new char[this->size];
             int len = zip_fread(zf, this->data, this->size);
             if (len < 0) {
                 string error="Error reading entry";
