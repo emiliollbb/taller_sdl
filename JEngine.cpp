@@ -101,7 +101,7 @@ void JEngine::init() {
 void JEngine::close() {
     
     //Destroy renderer  
-    if(sdl_renderer!=NULL)
+    if(this->sdl_renderer!=NULL)
     {
       SDL_DestroyRenderer( this->sdl_renderer );
       this->sdl_renderer=NULL;
