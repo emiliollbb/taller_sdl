@@ -271,7 +271,6 @@ void JEngine::load_texture(struct sized_texture *texture, Resource *res) {
   
     //Get rid of old loaded surface
     SDL_FreeSurface(loadedSurface);
-    free(rw);
 }
 
 void JEngine::update_game(){}
