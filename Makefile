@@ -1,5 +1,6 @@
 #https://stackoverflow.com/questions/17620884/static-linking-of-sdl2-libraries
 # apt-get install build-essential libzip-dev
+# https://sourceforge.net/projects/mingw/files/MinGW/Extension/zlib/zlib-1.2.3-1-mingw32/
 
 #COMPILER_FLAGS specifies the additional compilation options we're using 
 COMPILER_FLAGS = -c -Wall -O2
@@ -9,12 +10,13 @@ LINKER_FLAGS = -lstdc++ -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lm -lzip
 
 SDL_WIN=/home/emilio/sdl_win/SDL2-2.0.16/x86_64-w64-mingw32
 SDL_IMAGE=/home/emilio/sdl_win/SDL2_image-2.0.5/x86_64-w64-mingw32
+ZIP_WIN=/home/emilio/sdl_win/libzip
 
 # Include Windows
-INCL_WIN=-I$(SDL_WIN)/include
+INCL_WIN=-I$(SDL_WIN)/include -I${ZIP_WIN}/include
 
-# lIB Windows
-LIB_WIN=-L$(SDL_WIN)/lib -L$(SDL_IMAGE)/lib
+# Lib Windows
+LIB_WIN=-L$(SDL_WIN)/lib -L$(SDL_IMAGE)/lib -L$(ZIP_WIN)/lib
 
 all: juego
 
@@ -51,8 +53,8 @@ Juego.win.o: Juego.cpp Juego.hpp
 main.win.o: main.cpp
 	x86_64-w64-mingw32-g++ $(INCL_WIN) $(COMPILER_FLAGS) winmain.cpp -o main.win.o
 
-juego.exe: main.win.o JEngine.win.o Juego.win.o
-	x86_64-w64-mingw32-g++ $(LIB_WIN) -static main.win.o JEngine.win.o Resource.win.o Juego.win.o `$(SDL_WIN)/bin/sdl2-config --static-libs` -lSDL2_image -o juego.exe
+juego.exe: main.win.o JEngine.win.o Juego.win.o Resource.win.o
+	x86_64-w64-mingw32-g++ $(LIB_WIN) -static main.win.o JEngine.win.o Resource.win.o Juego.win.o `$(SDL_WIN)/bin/sdl2-config --static-libs` -lSDL2_image -lzip -lzip.dll -o juego.exe
 
 juego.dat: background.png
 	zip -j juego.dat background.png
