@@ -9,15 +9,16 @@ COMPILER_FLAGS = -c -Wall -O2
 LINKER_FLAGS = -lstdc++ -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lm
 
 SDL_WIN=/home/emilio/sdl_win/SDL2-2.0.16/x86_64-w64-mingw32
-SDL_IMAGE=/home/emilio/sdl_win/SDL2_image-2.0.5/x86_64-w64-mingw32
+SDL_WIN_IMAGE=/home/emilio/sdl_win/SDL2_image-2.0.5/x86_64-w64-mingw32
+SDL_WIN_TTF=/home/emilio/sdl_win/SDL2_ttf-2.0.15/x86_64-w64-mingw32
 
 # Include Windows
-INCL_WIN=-I$(SDL_WIN)/include -I${ZIP_WIN}/include
+INCL_WIN=-I$(SDL_WIN)/include -I${SDL_WIN_IMAGE}/include -I${SDL_WIN_TTF}/include
 
 # Lib Windows
-LIB_WIN=-L$(SDL_WIN)/lib -L$(SDL_IMAGE)/lib
+LIB_WIN=-L$(SDL_WIN)/lib -L$(SDL_WIN_IMAGE)/lib -L$(SDL_WIN_TTF)/lib
 
-all: juego
+all: juego juego.dat
 
 JEngine.o: JEngine.cpp JEngine.hpp
 	gcc $(COMPILER_FLAGS) JEngine.cpp -o JEngine.o
@@ -59,10 +60,10 @@ main.win.o: main.cpp
 	x86_64-w64-mingw32-g++ $(INCL_WIN) $(COMPILER_FLAGS) winmain.cpp -o main.win.o
 
 juego.exe: main.win.o JEngine.win.o Juego.win.o Resource.win.o microtar.win.o
-	x86_64-w64-mingw32-g++ $(LIB_WIN) -static main.win.o JEngine.win.o Resource.win.o microtar.win.o Juego.win.o `$(SDL_WIN)/bin/sdl2-config --static-libs` -lSDL2_image -o juego.exe
+	x86_64-w64-mingw32-g++ $(LIB_WIN) -static main.win.o JEngine.win.o Resource.win.o microtar.win.o Juego.win.o `$(SDL_WIN)/bin/sdl2-config --static-libs` -lSDL2_image -lSDL2_ttf.dll -lSDL2_ttf -o juego.exe
 
 juego.dat: background.png
 	tar cvf juego.dat background.png
 
 juego.zip: juego.exe juego.dat
-	zip -j juego.zip juego.exe juego.dat $(SDL_IMAGE)/bin/libpng16-16.dll $(SDL_IMAGE)/bin/zlib1.dll background.png
+	zip -j juego.zip juego.exe juego.dat $(SDL_WIN)/bin/SDL2.dll $(SDL_WIN_IMAGE)/bin/libpng16-16.dll $(SDL_WIN_IMAGE)/bin/zlib1.dll $(SDL_WIN_TTF)/bin/SDL2_ttf.dll $(SDL_WIN_TTF)/bin/libfreetype-6.dll background.png

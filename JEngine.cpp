@@ -1,7 +1,7 @@
 #include <iostream>
 #include <SDL2/SDL.h>
-//#include <SDL2/SDL_ttf.h>
-//#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_image.h>
 //#include <SDL2/SDL_mixer.h>
 #include "JEngine.hpp"
 #include "Resource.hpp"
@@ -81,14 +81,13 @@ void JEngine::init() {
 	  throw JEngineException(error);
     }
     
-    /*
     //Initialize SDL_ttf 
     if(TTF_Init()<0) 
     {
       printf( "SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError() ); 
       exit(-1);
     }
-  
+/*  
     //Initialize SDL_mixer 
     if(Mix_OpenAudio( 22050, MIX_DEFAULT_FORMAT, 2, 512 )<0) 
     { 
@@ -124,8 +123,9 @@ void JEngine::close() {
     // Exit SDL
     /*
     Mix_CloseAudio();
+    * */
     TTF_Quit();
-    */
+    
     IMG_Quit();
     SDL_Quit();
 }
