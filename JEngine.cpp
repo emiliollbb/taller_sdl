@@ -2,7 +2,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_image.h>
-//#include <SDL2/SDL_mixer.h>
+#include <SDL2/SDL_mixer.h>
 #include "JEngine.hpp"
 #include "Resource.hpp"
 
@@ -87,14 +87,14 @@ void JEngine::init() {
       printf( "SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError() ); 
       exit(-1);
     }
-/*  
+  
     //Initialize SDL_mixer 
     if(Mix_OpenAudio( 22050, MIX_DEFAULT_FORMAT, 2, 512 )<0) 
     { 
       printf( "SDL_mixer could not initialize!\n");
       exit(-1);
     }
-    * */
+
 }
 
 void JEngine::close() {
@@ -120,13 +120,13 @@ void JEngine::close() {
       this->sdl_gamepads[i]=NULL;
     }
   
-    // Exit SDL
-    /*
+    // Close SDL_mixer
     Mix_CloseAudio();
-    * */
+    // Close SDL TTF
     TTF_Quit();
-    
+    // Close SDL IMG
     IMG_Quit();
+    // Close SDL
     SDL_Quit();
 }
 
