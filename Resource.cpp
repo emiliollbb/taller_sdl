@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <string>
 #include <iostream>
-#include <zip.h>
+#include "microtar.h"
 
 using namespace std;
 
@@ -63,53 +63,42 @@ void Resource::load_plain(void) {
 
 
 void Resource::load(void) {
-    // https://gist.github.com/mobius/1759816
-    struct zip *za;
-    int zlib_error;
+    // https://github.com/rxi/microtar
+    mtar_t tar;
+    mtar_header_t h;
+    int status;
     
-    za = zip_open("juego.dat", 0, &zlib_error);
-    if(za == NULL) {
-        string error = "Error opening zip file";
+    /* Open tar archive for reading */
+    status = mtar_open(&tar, "juego.dat", "r");    
+    if(status!=0) {
+        string error = "Error opening tar file "+ string(mtar_strerror(status));
         throw ResourceException(error);
     }
     
-    int zip_entries_count=zip_get_num_entries(za, 0);
-    for (int i = 0; i <zip_entries_count; i++) {
-        struct zip_stat sb;
-        int status = zip_stat_index(za, i, 0, &sb);
-        if(status!=0) {
-            string error="Error stat entry";
-            throw ResourceException(error);
-        }
-        string zip_entry_name = string(sb.name);
-        if(zip_entry_name==this->file_name) {
-            this->size = sb.size;
-                        
-            struct zip_file *zf = zip_fopen_index(za, i, 0);
-            if (!zf) {
-                string error="Error fopen entry";
-                throw ResourceException(error);
-            }
-            
-            this->data = new char[this->size];
-            int len = zip_fread(zf, this->data, this->size);
-            if (len < 0) {
-                string error="Error reading entry";
-                throw ResourceException(error);
-            }
-                        
-            if (zip_fclose(zf) == -1) {
-                string error = "Error closing zip entry";
-                throw ResourceException(error);
-            }
-        }
-    }
-        
-    
-    if (zip_close(za) == -1) {
-        string error = "Error closing zip file";
+    /* Find file */
+    status = mtar_find(&tar, this->file_name.c_str(), &h);
+    if(status!=0) {
+        string error = "Error locating resource in tar file "+ string(mtar_strerror(status));
         throw ResourceException(error);
     }
+    
+    /* Initialize data */
+    this->size = h.size;
+    this->data = new char[this->size];
+    
+    /* Read file */
+    status = mtar_read_data(&tar, this->data, this->size);
+    if(status!=0) {
+        string error = "Error reading resource in tar file "+ string(mtar_strerror(status));
+        throw ResourceException(error);
+    }
+    
+    /* Close archive */
+    status = mtar_close(&tar);
+    if(status!=0) {
+        string error = "Error closing tar file "+ string(mtar_strerror(status));
+        throw ResourceException(error);
+    }    
 }
 
 
