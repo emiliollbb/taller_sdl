@@ -286,31 +286,6 @@ void JEngine::render() {
     SDL_RenderPresent(sdl_renderer);
 }
 
-void JEngine::load_texture(struct sized_texture *texture, string path) {
-    // Aux surface
-    SDL_Surface* loadedSurface;
-  
-    //Load image at specified path
-    loadedSurface = IMG_Load(path.c_str());
-    if(loadedSurface == NULL )
-    {
-      printf( "Unable to load image %s! SDL_image Error: %s\n", path.c_str(), IMG_GetError() );
-      exit(-1);
-    }
-    //Get image dimensions 
-    texture->width = loadedSurface->w; 
-    texture->height = loadedSurface->h;
-    //Create texture from surface pixels
-    texture->texture = SDL_CreateTextureFromSurface(sdl_renderer, loadedSurface);
-    if( texture->texture == NULL )
-    {
-      printf( "Unable to create texture from %s! SDL Error: %s\n", path.c_str(), SDL_GetError() );
-    }
-  
-    //Get rid of old loaded surface
-    SDL_FreeSurface(loadedSurface);
-}
-
 void JEngine::load_texture(struct sized_texture *texture, Resource *res) {
     // Aux surface
     SDL_Surface* loadedSurface;
@@ -336,6 +311,16 @@ void JEngine::load_texture(struct sized_texture *texture, Resource *res) {
   
     //Get rid of old loaded surface
     SDL_FreeSurface(loadedSurface);
+}
+
+void JEngine::load_texture(struct sized_texture *texture, string filename) {
+    cout << "Load media juego" <<endl;
+    
+    Resource *resource = new Resource(filename);
+    resource->load();
+    load_texture(texture, resource);
+    delete resource;
+    
 }
 
 void JEngine::update_game(){}

@@ -46,6 +46,7 @@ class JEngine {
     private:
         void sync_render(void);
         void process_input(SDL_Event *e);
+        void load_texture(struct sized_texture *texture, Resource *res);
         bool quit;
     protected:
         //Screen dimension constants
@@ -68,8 +69,7 @@ class JEngine {
         void close(void);
         void run(void);
         void render(void);
-        void load_texture(struct sized_texture *texture, string path);
-        void load_texture(struct sized_texture *texture, Resource *res);
+        void load_texture(struct sized_texture *texture, string filename);        
         virtual void render_game(void);
         virtual void update_game(void);
         virtual void load_media(void);

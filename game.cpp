@@ -20,16 +20,7 @@ void Juego::update_game() {
 }
 
 void Juego::load_media() {
-    cout << "Load media juego" <<endl;
-    //Load background 
-    //load_texture(&texture_background, string("background.png")); 
-    
-    string file_name = "background.png";
-    Resource *resBackground = new Resource(file_name);
-    resBackground->load();
-    load_texture(&texture_background, resBackground);
-    delete resBackground;
-    
+    this->load_texture(&texture_background, "background.png");    
 }
 
 void Juego::close_media()
