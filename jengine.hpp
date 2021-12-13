@@ -62,14 +62,14 @@ class JEngine {
         SDL_DisplayMode sdl_display_mode;
         //Game Controllers 
         SDL_Joystick *sdl_gamepads[2];
+        void render(void);
+        void load_texture(struct sized_texture *texture, string filename);
     public:
         JEngine(void);
         virtual ~JEngine(void);
         void init(void);
         void close(void);
-        void run(void);
-        void render(void);
-        void load_texture(struct sized_texture *texture, string filename);        
+        void run(void);             
         virtual void render_game(void);
         virtual void update_game(void);
         virtual void load_media(void);
