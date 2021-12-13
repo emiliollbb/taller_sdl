@@ -8,8 +8,6 @@ using namespace std;
 int main(int argc, char* argv[])
 {
 	try {
-        cout <<"Hello!" << endl;
-
         Juego *juego = new Juego();
         juego->run();
             

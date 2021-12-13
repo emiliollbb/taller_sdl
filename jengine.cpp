@@ -83,11 +83,9 @@ string* JEngineException::what(void) {
 }
 
 JEngine::JEngine() {
-    cout << "Init JEngine" << endl;
 }
 
 JEngine::~JEngine() {  
-    cout << "Destroy JEngine" << endl; 
 }
 
 void JEngine::init() {
@@ -149,15 +147,15 @@ void JEngine::init() {
     //Initialize SDL_ttf 
     if(TTF_Init()<0) 
     {
-      printf( "SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError() ); 
-      exit(-1);
+        string error = "SDL_ttf could not initialize! SDL_ttf Error: " + string(TTF_GetError());
+        throw JEngineException(error);
     }
   
     //Initialize SDL_mixer 
     if(Mix_OpenAudio( 22050, MIX_DEFAULT_FORMAT, 2, 512 )<0) 
     { 
-      printf( "SDL_mixer could not initialize!\n");
-      exit(-1);
+        string error = "SDL_mixer could not initialize!";
+        throw JEngineException(error);
     }
 
 }
@@ -195,7 +193,7 @@ void JEngine::close() {
     SDL_Quit();
 }
 
-void JEngine::process_input(SDL_Event *e)
+void JEngine::process_input_internal(SDL_Event *e)
 {
     //User requests quit
     if(e->type == SDL_QUIT 
@@ -204,6 +202,9 @@ void JEngine::process_input(SDL_Event *e)
     )
     {
       quit = 1;
+    }
+    else {
+        process_input(e);
     }
 }
 
@@ -252,7 +253,6 @@ void JEngine::run()
     init();
   
     // Load Media
-    cout << "Load media..." <<endl;
     load_media();
       
     // Main game loop
@@ -261,7 +261,7 @@ void JEngine::run()
       //Handle events on queue
       while( SDL_PollEvent( &e ) != 0 )
       {
-        process_input(&e);
+        process_input_internal(&e);
       }
     
       // Update & Render
@@ -296,8 +296,8 @@ void JEngine::load_texture(struct sized_texture *texture, Resource *res) {
     loadedSurface = IMG_Load_RW(rw, 1);
     if(loadedSurface == NULL )
     {
-      printf( "Unable to load image %s! SDL_image Error: %s\n", res->getFileName().c_str(), IMG_GetError() );
-      exit(-1);
+      string error = "Unable to load image %s! SDL_image Error: " + res->getFileName() + string(IMG_GetError());
+	  throw JEngineException(error);
     }
     //Get image dimensions 
     texture->width = loadedSurface->w; 
@@ -306,7 +306,8 @@ void JEngine::load_texture(struct sized_texture *texture, Resource *res) {
     texture->texture = SDL_CreateTextureFromSurface(sdl_renderer, loadedSurface);
     if( texture->texture == NULL )
     {
-      printf( "Unable to create texture from %s! SDL Error: %s\n", res->getFileName().c_str(), SDL_GetError() );
+      string error = "Unable to create texture from %s! SDL Error: " + res->getFileName() + string(SDL_GetError());
+	  throw JEngineException(error);
     }
   
     //Get rid of old loaded surface
@@ -314,8 +315,6 @@ void JEngine::load_texture(struct sized_texture *texture, Resource *res) {
 }
 
 void JEngine::load_texture(struct sized_texture *texture, string filename) {
-    cout << "Load media juego" <<endl;
-    
     Resource *resource = new Resource(filename);
     resource->load();
     load_texture(texture, resource);
@@ -325,6 +324,7 @@ void JEngine::load_texture(struct sized_texture *texture, string filename) {
 
 void JEngine::update_game(){}
 void JEngine::render_game(){}
-void JEngine::load_media(){cout << "base"<<endl;}
+void JEngine::load_media(){}
 void JEngine::close_media(){}
+void JEngine::process_input(SDL_Event *e){}
 

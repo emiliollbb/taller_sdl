@@ -45,7 +45,7 @@ class Resource {
 class JEngine {
     private:
         void sync_render(void);
-        void process_input(SDL_Event *e);
+        void process_input_internal(SDL_Event *e);
         void load_texture(struct sized_texture *texture, Resource *res);
         bool quit;
     protected:
@@ -74,6 +74,7 @@ class JEngine {
         virtual void update_game(void);
         virtual void load_media(void);
         virtual void close_media(void);
+        virtual void process_input(SDL_Event *e);
 };
 
 #endif
