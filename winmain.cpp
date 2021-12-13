@@ -1,7 +1,8 @@
 #include <iostream>
 #include <string>
-#include "Juego.hpp"
 #include <windows.h>
+#include "game.hpp"
+#include "jengine.hpp"
 
 using namespace std;
 

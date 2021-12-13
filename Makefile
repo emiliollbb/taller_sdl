@@ -19,52 +19,47 @@ INCL_WIN=-I$(SDL_WIN)/include -I${SDL_WIN_IMAGE}/include -I${SDL_WIN_TTF}/includ
 # Lib Windows
 LIB_WIN=-L$(SDL_WIN)/lib -L$(SDL_WIN_IMAGE)/lib -L$(SDL_WIN_TTF)/lib -L$(SDL_WIN_MIXER)/lib
 
-all: juego juego.dat
+all: game game.dat
 
-JEngine.o: JEngine.cpp JEngine.hpp
-	gcc $(COMPILER_FLAGS) JEngine.cpp -o JEngine.o
-	
-Juego.o: Juego.cpp Juego.hpp
-	gcc $(COMPILER_FLAGS) Juego.cpp -o Juego.o
-
-Resource.o: Resource.cpp Resource.hpp
-	gcc $(COMPILER_FLAGS) Resource.cpp -o Resource.o
-	
 microtar.o: microtar.h microtar.c
 	gcc $(COMPILER_FLAGS) microtar.c -o microtar.o
+
+jengine.o: jengine.cpp jengine.hpp
+	gcc $(COMPILER_FLAGS) jengine.cpp -o jengine.o
+	
+game.o: game.cpp game.hpp
+	gcc $(COMPILER_FLAGS) game.cpp -o game.o
+
 
 main.o: main.cpp
 	gcc $(COMPILER_FLAGS) main.cpp -o main.o
 
-juego: main.o JEngine.o Juego.o Resource.o microtar.o
-	gcc $(LINKER_FLAGS) main.o JEngine.o Resource.o microtar.o Juego.o -o juego
+game: main.o jengine.o game.o microtar.o
+	gcc $(LINKER_FLAGS) main.o jengine.o microtar.o game.o -o game
 	
-debug: JEngine.cpp JEngine.hpp Juego.cpp Juego.hpp Resource.cpp microtar.c Resource.hpp main.cpp
-	gcc -g $(LINKER_FLAGS) JEngine.cpp JEngine.hpp Juego.cpp Juego.hpp Resource.cpp Resource.hpp main.cpp -o debug
+debug: jengine.cpp jengine.hpp juego.cpp game.hpp microtar.c main.cpp
+	gcc -g $(LINKER_FLAGS) jengine.cpp game.cpp main.cpp -o debug
 
 clean:
-	rm -f *.o *.exe *.zip *.dat juego debug
+	rm -f *.o *.exe *.zip *.dat game debug
 
-JEngine.win.o: JEngine.cpp JEngine.hpp
-	x86_64-w64-mingw32-gcc $(INCL_WIN) $(LIB_WIN) $(COMPILER_FLAGS) JEngine.cpp -o JEngine.win.o
-	
-Resource.win.o: Resource.cpp Resource.hpp
-	x86_64-w64-mingw32-gcc $(INCL_WIN) $(LIB_WIN) $(COMPILER_FLAGS) Resource.cpp -o Resource.win.o
+jengine.win.o: jengine.cpp jengine.hpp
+	x86_64-w64-mingw32-gcc $(INCL_WIN) $(LIB_WIN) $(COMPILER_FLAGS) jengine.cpp -o jengine.win.o
 
 microtar.win.o: microtar.h microtar.c
 	x86_64-w64-mingw32-gcc $(COMPILER_FLAGS) microtar.c -o microtar.win.o
 	
-Juego.win.o: Juego.cpp Juego.hpp
-	x86_64-w64-mingw32-gcc $(INCL_WIN) $(LIB_WIN) $(COMPILER_FLAGS) Juego.cpp -o Juego.win.o
+game.win.o: game.cpp game.hpp
+	x86_64-w64-mingw32-gcc $(INCL_WIN) $(LIB_WIN) $(COMPILER_FLAGS) game.cpp -o game.win.o
 
 main.win.o: main.cpp
 	x86_64-w64-mingw32-g++ $(INCL_WIN) $(COMPILER_FLAGS) winmain.cpp -o main.win.o
 
-juego.exe: main.win.o JEngine.win.o Juego.win.o Resource.win.o microtar.win.o
-	x86_64-w64-mingw32-g++ $(LIB_WIN) -static main.win.o JEngine.win.o Resource.win.o microtar.win.o Juego.win.o `$(SDL_WIN)/bin/sdl2-config --static-libs` -lSDL2_image -lSDL2_ttf.dll -lSDL2_ttf -lSDL2_mixer.dll -lSDL2_mixer -o juego.exe
+game.exe: main.win.o jengine.win.o game.win.o microtar.win.o
+	x86_64-w64-mingw32-g++ $(LIB_WIN) -static main.win.o jengine.win.o microtar.win.o game.win.o `$(SDL_WIN)/bin/sdl2-config --static-libs` -lSDL2_image -lSDL2_ttf.dll -lSDL2_ttf -lSDL2_mixer.dll -lSDL2_mixer -o game.exe
 
-juego.dat: background.png
-	tar cvf juego.dat background.png
+game.dat: background.png
+	tar cvf game.dat background.png
 
-juego.zip: juego.exe juego.dat
-	zip -j juego.zip juego.exe juego.dat $(SDL_WIN)/bin/SDL2.dll $(SDL_WIN_IMAGE)/bin/libpng16-16.dll $(SDL_WIN_IMAGE)/bin/zlib1.dll $(SDL_WIN_TTF)/bin/SDL2_ttf.dll $(SDL_WIN_TTF)/bin/libfreetype-6.dll $(SDL_WIN_MIXER)/bin/SDL2_mixer.dll background.png
+game.zip: game.exe game.dat
+	zip -j game.zip game.exe game.dat $(SDL_WIN)/bin/SDL2.dll $(SDL_WIN_IMAGE)/bin/libpng16-16.dll $(SDL_WIN_IMAGE)/bin/zlib1.dll $(SDL_WIN_TTF)/bin/SDL2_ttf.dll $(SDL_WIN_TTF)/bin/libfreetype-6.dll $(SDL_WIN_MIXER)/bin/SDL2_mixer.dll background.png
