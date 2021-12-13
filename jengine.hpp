@@ -26,15 +26,6 @@ class JEngineException {
 		string* what();
 };
 
-class ResourceException {
-    private:
-    protected:
-        string message;
-    public:
-        ResourceException(string &what);
-	string* what();
-};
-
 class Resource {
     private:
 		string file_name;
