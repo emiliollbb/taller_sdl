@@ -58,8 +58,8 @@ main.win.o: main.cpp
 game.exe: main.win.o jengine.win.o game.win.o microtar.win.o
 	x86_64-w64-mingw32-g++ $(LIB_WIN) -static main.win.o jengine.win.o microtar.win.o game.win.o `$(SDL_WIN)/bin/sdl2-config --static-libs` -lSDL2_image -lSDL2_ttf.dll -lSDL2_ttf -lSDL2_mixer.dll -lSDL2_mixer -o game.exe
 
-game.dat: background.png
-	tar cvf game.dat background.png
+game.dat: background.png sprites.png
+	tar cvf game.dat background.png sprites.png
 
 game.zip: game.exe game.dat
 	zip -j game.zip game.exe game.dat $(SDL_WIN)/bin/SDL2.dll $(SDL_WIN_IMAGE)/bin/libpng16-16.dll $(SDL_WIN_IMAGE)/bin/zlib1.dll $(SDL_WIN_TTF)/bin/SDL2_ttf.dll $(SDL_WIN_TTF)/bin/libfreetype-6.dll $(SDL_WIN_MIXER)/bin/SDL2_mixer.dll background.png

@@ -7,6 +7,8 @@ class Juego: public JEngine {
     private:
         // Textura fondo
         struct sized_texture texture_background;
+        struct sized_texture texture_sprites;
+        int vx, vy, x, y;
     protected:
     public:
         Juego(void);
