@@ -5,6 +5,8 @@
 
 class Juego: public JEngine {
     private:
+        // Textura fondo
+        struct sized_texture texture_background;
     protected:
     public:
         Juego(void);
