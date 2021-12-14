@@ -9,6 +9,8 @@ class Juego: public JEngine {
         struct sized_texture texture_background;
         struct sized_texture texture_sprites;
         int vx, vy, x, y;
+        int sheet_y;
+        SDL_RendererFlip flip_h;
     protected:
     public:
         Juego(void);
