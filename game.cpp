@@ -46,6 +46,7 @@ void Juego::load_media() {
 void Juego::close_media() {
   // Destroy background texture
   SDL_DestroyTexture(texture_background.texture);
+  SDL_DestroyTexture(texture_sprites.texture);
 }
 
 void Juego::process_input(SDL_Event *e) {
