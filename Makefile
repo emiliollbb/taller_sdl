@@ -1,11 +1,3 @@
-# SETUP ENVIRONMENT
-# apt-get install build-essential mingw-w64
-# https://sourceforge.net/projects/mingw/files/MinGW/Extension/zlib/zlib-1.2.3-1-mingw32/
-#
-#
-#
-#
-#
 
 #COMPILER_FLAGS specifies the additional compilation options we're using 
 COMPILER_FLAGS = -c -Wall -O2
@@ -13,13 +5,13 @@ COMPILER_FLAGS = -c -Wall -O2
 #LINKER_FLAGS specifies the libraries we're linking against 
 LINKER_FLAGS = -lstdc++ -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lm
 
-SDL_WIN=/home/emilio/sdl_win/SDL2-2.0.16/x86_64-w64-mingw32
+SDL_WIN=/home/emilio/sdl_win/SDL2-2.0.18/x86_64-w64-mingw32
 SDL_WIN_IMAGE=/home/emilio/sdl_win/SDL2_image-2.0.5/x86_64-w64-mingw32
 SDL_WIN_TTF=/home/emilio/sdl_win/SDL2_ttf-2.0.15/x86_64-w64-mingw32
 SDL_WIN_MIXER=/home/emilio/sdl_win/SDL2_mixer-2.0.4/x86_64-w64-mingw32
 
 # Include Windows
-INCL_WIN=-I$(SDL_WIN)/include -I${SDL_WIN_IMAGE}/include -I${SDL_WIN_TTF}/include -I${SDL_WIN_MIXER}/include
+INCL_WIN=-I$(SDL_WIN)/include -I$(SDL_WIN)/include/SDL2 -I${SDL_WIN_IMAGE}/include -I${SDL_WIN_TTF}/include -I${SDL_WIN_MIXER}/include
 
 # Lib Windows
 LIB_WIN=-L$(SDL_WIN)/lib -L$(SDL_WIN_IMAGE)/lib -L$(SDL_WIN_TTF)/lib -L$(SDL_WIN_MIXER)/lib
