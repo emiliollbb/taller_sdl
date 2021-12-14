@@ -1,6 +1,11 @@
-#https://stackoverflow.com/questions/17620884/static-linking-of-sdl2-libraries
-# apt-get install build-essential libzip-dev
+# SETUP ENVIRONMENT
+# apt-get install build-essential mingw-w64
 # https://sourceforge.net/projects/mingw/files/MinGW/Extension/zlib/zlib-1.2.3-1-mingw32/
+#
+#
+#
+#
+#
 
 #COMPILER_FLAGS specifies the additional compilation options we're using 
 COMPILER_FLAGS = -c -Wall -O2
