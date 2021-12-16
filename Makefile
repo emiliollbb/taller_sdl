@@ -5,10 +5,10 @@ COMPILER_FLAGS = -c -Wall -O2
 #LINKER_FLAGS specifies the libraries we're linking against 
 LINKER_FLAGS = -lstdc++ -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lm
 
-SDL_WIN=/home/emilio/sdl_win/SDL2-2.0.18/x86_64-w64-mingw32
-SDL_WIN_IMAGE=/home/emilio/sdl_win/SDL2_image-2.0.5/x86_64-w64-mingw32
-SDL_WIN_TTF=/home/emilio/sdl_win/SDL2_ttf-2.0.15/x86_64-w64-mingw32
-SDL_WIN_MIXER=/home/emilio/sdl_win/SDL2_mixer-2.0.4/x86_64-w64-mingw32
+SDL_WIN= ${HOME}/sdl_win/SDL2-2.0.18/x86_64-w64-mingw32
+SDL_WIN_IMAGE= ${HOME}/sdl_win/SDL2_image-2.0.5/x86_64-w64-mingw32
+SDL_WIN_TTF= ${HOME}/sdl_win/SDL2_ttf-2.0.15/x86_64-w64-mingw32
+SDL_WIN_MIXER= ${HOME}/sdl_win/SDL2_mixer-2.0.4/x86_64-w64-mingw32
 
 # Include Windows
 INCL_WIN=-I$(SDL_WIN)/include -I$(SDL_WIN)/include/SDL2 -I${SDL_WIN_IMAGE}/include -I${SDL_WIN_TTF}/include -I${SDL_WIN_MIXER}/include
@@ -32,7 +32,7 @@ main.o: main.cpp
 	gcc $(COMPILER_FLAGS) main.cpp -o main.o
 
 game: main.o jengine.o game.o microtar.o
-	gcc $(LINKER_FLAGS) main.o jengine.o microtar.o game.o -o game
+	gcc main.o jengine.o microtar.o game.o $(LINKER_FLAGS) -o game
 	
 debug: jengine.cpp jengine.hpp juego.cpp game.hpp microtar.c main.cpp
 	gcc -g $(LINKER_FLAGS) jengine.cpp game.cpp main.cpp -o debug
